@@ -1,14 +1,18 @@
 import React from 'react'
-import { Routes, Route } from 'react-router-dom'
 import Layout from './components/Layout'
 import LandingPage from './components/LandingPage'
+import AboutUs from './components/AboutUs'
+import Contact from './components/Contact'
+import './styles/animations.css' // Import animations
 
 export default function App() {
   return (
     <Layout>
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-      </Routes>
+      <main className="main-content">
+        <LandingPage />
+        <AboutUs />
+        <Contact />
+      </main>
     </Layout>
   )
 }

@@ -1,21 +1,41 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
-export default function Navbar() {
+const Navbar = () => {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const offset = window.scrollY;
+      if (offset > 50) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
-    <>
-      <Link to="/" className="nav-logo">
-        LOGO
-      </Link>
-      <nav className="navbar">
-        <div className="navbar-container">
-          <Link to="/" className="nav-link home">Home</Link>
-          <Link to="/about" className="nav-link about">About</Link>
-          <Link to="/contact" className="nav-link contact">Contact</Link>
-          <Link to="/download" className="nav-link download">Download</Link>
+    <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
+      <div className="navbar-container">
+        <Link to="/" className="nav-logo">
+          LOGO
+        </Link>
+        <div className="nav-links">
+          <a href="#home" className="nav-link">Home</a>
+          <a href="#about" className="nav-link">About Us</a>
+          <a href="#contact" className="nav-link">Contact</a>
+          <Link to="/download" className="nav-link">Download</Link>
           <Link to="/login" className="nav-button">Login</Link>
         </div>
-      </nav>
-    </>
+      </div>
+    </nav>
   );
-}
+};
+
+export default Navbar;
