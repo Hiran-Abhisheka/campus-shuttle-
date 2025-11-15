@@ -13,7 +13,7 @@ const Contact = () => {
       title: "Visit Us",
       description: "Stop by our office during business hours",
       link: "https://maps.google.com",
-      text: "No. 12, Greenway Road\nPeradeniya, Kandy,\nSri Lanka",
+      text: "Click Here",
       delay: 200
     },
     {
@@ -28,8 +28,8 @@ const Contact = () => {
       icon: "fas fa-envelope",
       title: "Email Us",
       description: "Send us your questions and we'll get back to you within 24 hours",
-      link: "mailto:shuttle@northwestern.edu",
-      text: "shuttle@northwestern.edu",
+      link: "mailto:campusshuttle@mail.com",
+      text: "campusshuttle@mail.com",
       delay: 600
     }
   ];

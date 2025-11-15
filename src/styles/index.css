@@ -41,13 +41,28 @@ html, body {
 /* Navbar Styles */
 .nav-logo {
   font-family: 'Inter', sans-serif;
-  font-size: 32px;
+  font-size: 1.5rem;
   font-weight: 700;
   color: var(--black);
   text-decoration: none;
-  letter-spacing: 10px;
-  text-transform: uppercase;
   margin-right: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  transition: all 0.3s ease;
+}
+
+.nav-logo:hover {
+  color: var(--primary);
+}
+
+.nav-logo i {
+  font-size: 1.6rem;
+  color: var(--primary);
+}
+
+.nav-logo span {
+  font-weight: 700;
 }
 
 .navbar {
