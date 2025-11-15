@@ -37,78 +37,65 @@ const featureCards: FeatureCard[] = [
 ];
 
 const AboutUs: React.FC = () => {
+  const [titleRef, titleVisible] = useScrollAnimation<HTMLHeadingElement>({ threshold: 0.3 });
+  const [subtitleRef, subtitleVisible] = useScrollAnimation<HTMLParagraphElement>({ threshold: 0.3, delay: 200 });
+  const [descRef, descVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.3, delay: 300 });
+  const [statsRef, statsVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.3, delay: 400 });
+  const [featuresRef, featuresVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.3, delay: 500 });
+
   return (
     <section id="about" className="section">
       <div className="about-bg-overlay"></div>
       <div className="container">
         <div className="about-header">
-          <h2 className="section-title">About Us</h2>
+          <h2 ref={titleRef} className={`section-title fade-down ${titleVisible ? 'visible' : ''}`}>About Us</h2>
           <div className="title-underline"></div>
-          <p className="section-subtitle">
+          <p ref={subtitleRef} className={`section-subtitle fade-up ${subtitleVisible ? 'visible' : ''}`}>
             Making campus transportation easy and efficient
           </p>
         </div>
         
         <div className="about-content">
-          <div className="about-main">
-            <div className="about-left">
-              <div className="about-description">
-                <p>
-                  The Campus Shuttle Service is a modern web application built to simplify university transportation. 
-                  Our goal is to create a safer, faster, and more connected travel experience for students. 
-                  With features like real-time shuttle tracking, instant ride booking, and automated email alerts 
-                  for parents, we bring Uber-like convenience right to your campus. Designed for students, drivers, 
-                  and administrators, this platform ensures smooth communication, safety, and efficiency all in one place.
-                </p>
-              </div>
+          {/* Main Description */}
+          <div ref={descRef} className={`about-description-main fade-up ${descVisible ? 'visible' : ''}`}>
+            <p>
+              The Campus Shuttle Service is a modern web application built to simplify university transportation. 
+              Our goal is to create a safer, faster, and more connected travel experience for students. 
+              With features like real-time shuttle tracking, instant ride booking, and automated email alerts 
+              for parents, we bring Uber-like convenience right to your campus.
+            </p>
+          </div>
 
-              <div className="impact-section">
-                <h3 className="impact-title">Our Impact</h3>
-                <div className="impact-cards">
-                  <div className="impact-card">
-                    <div className="impact-icon">
-                      <i className="fas fa-bus"></i>
-                      <span className="impact-number">50+</span>
-                    </div>
-                    <div className="impact-details">
-                      <h4>Active Drivers</h4>
-                      <p>Professional drivers serving our campus community</p>
-                    </div>
-                  </div>
-                  
-                  <div className="impact-card">
-                    <div className="impact-icon">
-                      <i className="fas fa-star"></i>
-                      <span className="impact-number">95%</span>
-                    </div>
-                    <div className="impact-details">
-                      <h4>Satisfaction Rate</h4>
-                      <p>Students love our reliable service</p>
-                    </div>
-                  </div>
-                  
-                  <div className="impact-card">
-                    <div className="impact-icon">
-                      <i className="fas fa-users"></i>
-                      <span className="impact-number">15K+</span>
-                    </div>
-                    <div className="impact-details">
-                      <h4>Monthly Users</h4>
-                      <p>Active students using our platform</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+          {/* Stats Row */}
+          <div ref={statsRef} className={`stats-row fade-up ${statsVisible ? 'visible' : ''}`}>
+            <div className="stat-item">
+              <i className="fas fa-bus stat-icon"></i>
+              <div className="stat-number" style={{ color: '#000000', fontWeight: 800, fontSize: '3rem' }}>50+</div>
+              <div className="stat-label" style={{ color: '#000000', fontWeight: 600 }}>Active Drivers</div>
             </div>
+            <div className="stat-item">
+              <i className="fas fa-star stat-icon"></i>
+              <div className="stat-number" style={{ color: '#000000', fontWeight: 800, fontSize: '3rem' }}>95%</div>
+              <div className="stat-label" style={{ color: '#000000', fontWeight: 600 }}>Satisfaction Rate</div>
+            </div>
+            <div className="stat-item">
+              <i className="fas fa-users stat-icon"></i>
+              <div className="stat-number" style={{ color: '#000000', fontWeight: 800, fontSize: '3rem' }}>15K+</div>
+              <div className="stat-label" style={{ color: '#000000', fontWeight: 600 }}>Monthly Users</div>
+            </div>
+          </div>
 
-            <div className="features-grid">
+          {/* Features List */}
+          <div ref={featuresRef} className={`features-section fade-up ${featuresVisible ? 'visible' : ''}`}>
+            <h3 className="features-heading">What We Offer</h3>
+            <div className="features-list">
               {featureCards.map((card, index) => (
-                <div key={index} className="feature-card">
-                  <div className="feature-icon">
+                <div key={index} className="feature-item">
+                  <div className="feature-icon-circle">
                     <i className={`fas ${card.icon}`}></i>
                   </div>
-                  <div className="feature-content">
-                    <h3>{card.title}</h3>
+                  <div className="feature-text">
+                    <h4>{card.title}</h4>
                     <p>{card.description}</p>
                   </div>
                 </div>
