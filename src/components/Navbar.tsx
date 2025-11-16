@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -30,6 +31,14 @@ const Navbar = () => {
     setShowLoginModal(false);
   };
 
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
+  };
+
+  const closeMobileMenu = () => {
+    setMobileMenuOpen(false);
+  };
+
   return (
     <>
       <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
@@ -38,12 +47,15 @@ const Navbar = () => {
             <i className="fas fa-bus"></i>
             <span>Campus Shuttle</span>
           </Link>
-          <div className="nav-links">
-            <a href="#home" className="nav-link">Home</a>
-            <a href="#about" className="nav-link">About Us</a>
-            <a href="#contact" className="nav-link">Contact</a>
-            <Link to="/download" className="nav-link">Download</Link>
-            <button onClick={handleLoginClick} className="nav-button">Login</button>
+          <button className="mobile-menu-icon" onClick={toggleMobileMenu}>
+            <i className={`fas ${mobileMenuOpen ? 'fa-times' : 'fa-bars'}`}></i>
+          </button>
+          <div className={`nav-links ${mobileMenuOpen ? 'mobile-active' : ''}`}>
+            <a href="#home" className="nav-link" onClick={closeMobileMenu}>Home</a>
+            <a href="#about" className="nav-link" onClick={closeMobileMenu}>About Us</a>
+            <a href="#contact" className="nav-link" onClick={closeMobileMenu}>Contact</a>
+            <Link to="/download" className="nav-link" onClick={closeMobileMenu}>Download</Link>
+            <button onClick={(e) => { handleLoginClick(e); closeMobileMenu(); }} className="nav-button">Login</button>
           </div>
         </div>
       </nav>

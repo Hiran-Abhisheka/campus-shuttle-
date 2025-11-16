@@ -365,28 +365,261 @@
 }
 
 /* Responsive Styles */
+
+/* Large Tablets (max-width: 1024px) */
+@media (max-width: 1024px) {
+  .contact-section {
+    padding: 8rem 0;
+  }
+
+  .contact-container {
+    padding: 0 3rem;
+  }
+
+  .contact-header h2 {
+    font-size: 4rem;
+  }
+
+  .contact-header p {
+    font-size: 1.3rem;
+  }
+
+  .contact-options {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+
+  .contact-option {
+    min-height: 350px;
+    padding: 2.5rem 1.8rem;
+  }
+
+  .contact-option i {
+    font-size: 3.2rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .contact-option h3 {
+    font-size: 1.85rem;
+  }
+
+  .contact-option p {
+    font-size: 1.05rem;
+  }
+}
+
+/* Tablets and iPads (max-width: 768px) */
 @media (max-width: 768px) {
   .contact-section {
     padding: 6rem 0;
   }
+
+  .contact-container {
+    padding: 0 2rem;
+  }
+
+  .contact-header {
+    margin-bottom: 5rem;
+  }
   
   .contact-header h2 {
     font-size: 3.5rem;
+    letter-spacing: 3px;
   }
   
   .contact-header p {
     font-size: 1.2rem;
-    padding: 0 2rem;
+    padding: 0 1rem;
   }
   
   .contact-options {
     grid-template-columns: 1fr;
+    max-width: 500px;
     gap: 2rem;
-    padding: 0 1.5rem;
+    padding: 0;
   }
   
   .contact-option {
-    padding: 3rem 2rem;
+    min-height: 320px;
+    padding: 2.5rem 2rem;
+  }
+
+  .contact-option i {
+    font-size: 3rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .contact-option h3 {
+    font-size: 1.75rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .contact-option p {
+    font-size: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .contact-option a {
+    padding: 0.9rem 1.8rem;
+    font-size: 0.95rem;
+  }
+}
+
+/* Mobile Landscape (max-width: 576px) */
+@media (max-width: 576px) {
+  .contact-section {
+    padding: 5rem 0;
+  }
+
+  .contact-container {
+    padding: 0 1.5rem;
+  }
+
+  .contact-header {
+    margin-bottom: 4rem;
+  }
+
+  .contact-header h2 {
+    font-size: 3rem;
+    letter-spacing: 2px;
+  }
+
+  .contact-header p {
+    font-size: 1.1rem;
+    padding: 0;
+  }
+
+  .contact-options {
+    gap: 1.75rem;
+  }
+
+  .contact-option {
+    min-height: 300px;
+    padding: 2.25rem 1.75rem;
+    border-radius: 24px;
+  }
+
+  .contact-option i {
+    font-size: 2.75rem;
+    margin-bottom: 1.35rem;
+  }
+
+  .contact-option h3 {
+    font-size: 1.6rem;
+    margin-bottom: 1.15rem;
+  }
+
+  .contact-option p {
+    font-size: 0.95rem;
+    margin-bottom: 1.85rem;
+  }
+
+  .contact-option a {
+    padding: 0.85rem 1.6rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Mobile Portrait (max-width: 480px) */
+@media (max-width: 480px) {
+  .contact-section {
+    padding: 4rem 0;
+  }
+
+  .contact-container {
+    padding: 0 1.25rem;
+  }
+
+  .contact-header {
+    margin-bottom: 3.5rem;
+  }
+
+  .contact-header h2 {
+    font-size: 2.5rem;
+    letter-spacing: 1px;
+  }
+
+  .contact-header p {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .contact-options {
+    gap: 1.5rem;
+  }
+
+  .contact-option {
+    min-height: 280px;
+    padding: 2rem 1.5rem;
+    border-radius: 20px;
+  }
+
+  .contact-option i {
+    font-size: 2.5rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .contact-option h3 {
+    font-size: 1.45rem;
+    margin-bottom: 1rem;
+  }
+
+  .contact-option p {
+    font-size: 0.9rem;
+    margin-bottom: 1.75rem;
+    line-height: 1.6;
+  }
+
+  .contact-option a {
+    padding: 0.8rem 1.5rem;
+    font-size: 0.88rem;
+  }
+}
+
+/* Extra Small Mobile (max-width: 360px) */
+@media (max-width: 360px) {
+  .contact-section {
+    padding: 3.5rem 0;
+  }
+
+  .contact-container {
+    padding: 0 1rem;
+  }
+
+  .contact-header {
+    margin-bottom: 3rem;
+  }
+
+  .contact-header h2 {
+    font-size: 2.25rem;
+  }
+
+  .contact-header p {
+    font-size: 0.95rem;
+  }
+
+  .contact-option {
+    min-height: 260px;
+    padding: 1.75rem 1.25rem;
+  }
+
+  .contact-option i {
+    font-size: 2.25rem;
+    margin-bottom: 1.15rem;
+  }
+
+  .contact-option h3 {
+    font-size: 1.35rem;
+  }
+
+  .contact-option p {
+    font-size: 0.85rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .contact-option a {
+    padding: 0.75rem 1.35rem;
+    font-size: 0.85rem;
   }
 }
 
@@ -406,24 +639,4 @@
 .visible {
   transform: translateY(0);
   opacity: 1;
-}
-
-@media (max-width: 992px) {
-  .contact-options {
-    justify-content: center;
-  }
-  
-  .contact-option {
-    flex-basis: calc(50% - 1rem);
-  }
-}
-
-@media (max-width: 768px) {
-  .contact-option {
-    flex-basis: 100%;
-  }
-  
-  .contact-header h2 {
-    font-size: 2rem;
-  }
 }

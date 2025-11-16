@@ -33,6 +33,7 @@ export default function LandingPage() {
   return (
     <>
       <section id="home" className="landing-page">
+        <div className="landing-bg-image"></div>
         <div className="content">
           <div className="left-side">
             <h2 
