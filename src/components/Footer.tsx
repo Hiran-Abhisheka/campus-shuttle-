@@ -1,16 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import '../styles/Footer.css';
 
 const Footer = () => {
+  const [showLoginModal, setShowLoginModal] = useState(false);
   const [brandRef, brandVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.1, delay: 0 });
   const [linksRef, linksVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.1, delay: 200 });
   const [servicesRef, servicesVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.1, delay: 400 });
   const [contactRef, contactVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.1, delay: 600 });
 
+  const handleLoginClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setShowLoginModal(true);
+  };
+
+  const closeModal = () => {
+    setShowLoginModal(false);
+  };
+
   return (
-    <footer className="footer">
+    <>
+      <footer className="footer">
       <div className="footer-main">
         <div className="footer-container">
           {/* Brand Column */}
@@ -46,7 +57,7 @@ const Footer = () => {
               <li><a href="#about"><i className="fas fa-chevron-right"></i> About</a></li>
               <li><a href="#contact"><i className="fas fa-chevron-right"></i> Contact</a></li>
               <li><Link to="/download"><i className="fas fa-chevron-right"></i> Download</Link></li>
-              <li><Link to="/login"><i className="fas fa-chevron-right"></i> Login</Link></li>
+              <li><a href="#" onClick={handleLoginClick}><i className="fas fa-chevron-right"></i> Login</a></li>
             </ul>
           </div>
 
@@ -124,6 +135,47 @@ const Footer = () => {
         </div>
       </div>
     </footer>
+
+    {/* Login Modal */}
+    {showLoginModal && (
+      <div className="login-modal-overlay" onClick={closeModal}>
+        <div className="login-modal" onClick={(e) => e.stopPropagation()}>
+          <button className="modal-close" onClick={closeModal}>
+            <i className="fas fa-times"></i>
+          </button>
+          
+          <h2 className="modal-title">Choose Login Type</h2>
+          <p className="modal-subtitle">Select your account type to continue</p>
+
+          <div className="login-options">
+            <div className="login-option">
+              <div className="login-option-icon rider-icon">
+                <i className="fas fa-id-card"></i>
+              </div>
+              <h3>Rider Login</h3>
+              <p>Access driver dashboard and manage routes</p>
+              <button className="option-btn rider-btn">
+                Continue as Rider
+                <i className="fas fa-arrow-right"></i>
+              </button>
+            </div>
+
+            <div className="login-option">
+              <div className="login-option-icon student-icon">
+                <i className="fas fa-graduation-cap"></i>
+              </div>
+              <h3>Student Login</h3>
+              <p>Track shuttles and book your rides</p>
+              <button className="option-btn student-btn">
+                Continue as Student
+                <i className="fas fa-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    )}
+    </>
   );
 };
 
