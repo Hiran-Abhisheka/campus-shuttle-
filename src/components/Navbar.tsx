@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -8,6 +8,10 @@ const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [loginView, setLoginView] = useState<'select' | 'rider' | 'student'>('select');
   const [signupView, setSignupView] = useState<'select' | 'rider' | 'student'>('select');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userType, setUserType] = useState<'student' | 'rider' | null>(null);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -24,6 +28,14 @@ const Navbar = () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+
+  useEffect(() => {
+    const studentLoggedIn = localStorage.getItem('studentLoggedIn');
+    if (studentLoggedIn === 'true') {
+      setIsLoggedIn(true);
+      setUserType('student');
+    }
+  }, [location.pathname]);
 
   const handleLoginClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -96,11 +108,24 @@ const Navbar = () => {
             <i className={`fas ${mobileMenuOpen ? 'fa-times' : 'fa-bars'}`}></i>
           </button>
           <div className={`nav-links ${mobileMenuOpen ? 'mobile-active' : ''}`}>
-            <a href="#home" className="nav-link" onClick={closeMobileMenu}>Home</a>
-            <a href="#about" className="nav-link" onClick={closeMobileMenu}>About Us</a>
-            <a href="#contact" className="nav-link" onClick={closeMobileMenu}>Contact</a>
-            <Link to="/download" className="nav-link" onClick={closeMobileMenu}>Download</Link>
-            <button onClick={(e) => { handleLoginClick(e); closeMobileMenu(); }} className="nav-button">Login</button>
+            {(isLoggedIn && userType === 'student') && (location.pathname === '/student-dashboard' || location.pathname === '/contact') ? (
+              <>
+                <Link to="/student-dashboard" className="nav-link" onClick={closeMobileMenu}>Ride</Link>
+                <Link to="/contact" className="nav-link" onClick={closeMobileMenu}>Contact</Link>
+                <a href="#message" className="nav-link" onClick={closeMobileMenu}>Message</a>
+                <Link to="/student-dashboard" className="nav-button" onClick={closeMobileMenu}>
+                  <i className="fas fa-user-circle"></i> Profile
+                </Link>
+              </>
+            ) : (
+              <>
+                <a href="#home" className="nav-link" onClick={closeMobileMenu}>Home</a>
+                <a href="#about" className="nav-link" onClick={closeMobileMenu}>About Us</a>
+                <a href="#contact" className="nav-link" onClick={closeMobileMenu}>Contact</a>
+                <Link to="/download" className="nav-link" onClick={closeMobileMenu}>Download</Link>
+                <button onClick={(e) => { handleLoginClick(e); closeMobileMenu(); }} className="nav-button">Login</button>
+              </>
+            )}
           </div>
         </div>
       </nav>
@@ -156,14 +181,14 @@ const Navbar = () => {
 
                 <form className="login-form">
                   <div className="form-group">
-                    <label htmlFor="rider-email">
-                      <i className="fas fa-envelope"></i>
-                      Email Address
+                    <label htmlFor="rider-username">
+                      <i className="fas fa-user-circle"></i>
+                      Username
                     </label>
                     <input 
-                      type="email" 
-                      id="rider-email" 
-                      placeholder="Enter your email"
+                      type="text" 
+                      id="rider-username" 
+                      placeholder="Enter your username"
                       required
                     />
                   </div>
@@ -209,16 +234,22 @@ const Navbar = () => {
                 <h2 className="modal-title">Student Login</h2>
                 <p className="modal-subtitle">Sign in to your student account</p>
 
-                <form className="login-form">
+                <form className="login-form" onSubmit={(e) => {
+                  e.preventDefault();
+                  setIsLoggedIn(true);
+                  setUserType('student');
+                  closeModal();
+                  navigate('/student-dashboard');
+                }}>
                   <div className="form-group">
-                    <label htmlFor="student-email">
-                      <i className="fas fa-envelope"></i>
-                      Email Address
+                    <label htmlFor="student-username">
+                      <i className="fas fa-user-circle"></i>
+                      Username
                     </label>
                     <input 
-                      type="email" 
-                      id="student-email" 
-                      placeholder="Enter your email"
+                      type="text" 
+                      id="student-username" 
+                      placeholder="Enter your username"
                       required
                     />
                   </div>
@@ -494,44 +525,151 @@ const Navbar = () => {
                 <h2 className="modal-title">Student Signup</h2>
                 <p className="modal-subtitle">Create your student account</p>
 
-                <form className="login-form">
-                  <div className="form-group">
-                    <label htmlFor="nav-student-signup-name">
-                      <i className="fas fa-user"></i>
-                      Full Name
-                    </label>
-                    <input 
-                      type="text" 
-                      id="nav-student-signup-name" 
-                      placeholder="Enter your full name"
-                      required
-                    />
+                <form className="login-form signup-form-extended">
+                  {/* Student Details Section */}
+                  <div className="form-section">
+                    <h3 className="section-heading">
+                      <i className="fas fa-user-graduate"></i>
+                      Student Details
+                    </h3>
+
+                    <div className="form-group">
+                      <label htmlFor="nav-student-username">
+                        <i className="fas fa-user-circle"></i>
+                        Username
+                      </label>
+                      <input 
+                        type="text" 
+                        id="nav-student-username" 
+                        placeholder="Choose a username"
+                        required
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label htmlFor="nav-student-fullname">
+                        <i className="fas fa-user"></i>
+                        Full Name
+                      </label>
+                      <input 
+                        type="text" 
+                        id="nav-student-fullname" 
+                        placeholder="Enter your full name"
+                        required
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label htmlFor="nav-student-email">
+                        <i className="fas fa-envelope"></i>
+                        Email Address
+                      </label>
+                      <input 
+                        type="email" 
+                        id="nav-student-email" 
+                        placeholder="Enter your email"
+                        required
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label htmlFor="nav-student-mobile">
+                        <i className="fas fa-phone"></i>
+                        Mobile Number
+                      </label>
+                      <input 
+                        type="tel" 
+                        id="nav-student-mobile" 
+                        placeholder="Enter your mobile number"
+                        required
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label htmlFor="nav-student-university">
+                        <i className="fas fa-university"></i>
+                        University
+                      </label>
+                      <input 
+                        type="text" 
+                        id="nav-student-university" 
+                        placeholder="Enter your university name"
+                        required
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label htmlFor="nav-student-address">
+                        <i className="fas fa-home"></i>
+                        Home Address
+                      </label>
+                      <input 
+                        type="text" 
+                        id="nav-student-address" 
+                        placeholder="Enter your home address"
+                        required
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label htmlFor="nav-student-password">
+                        <i className="fas fa-lock"></i>
+                        Password
+                      </label>
+                      <input 
+                        type="password" 
+                        id="nav-student-password" 
+                        placeholder="Create a password"
+                        required
+                      />
+                    </div>
                   </div>
 
-                  <div className="form-group">
-                    <label htmlFor="nav-student-signup-email">
-                      <i className="fas fa-envelope"></i>
-                      Email Address
-                    </label>
-                    <input 
-                      type="email" 
-                      id="nav-student-signup-email" 
-                      placeholder="Enter your email"
-                      required
-                    />
-                  </div>
+                  {/* Parent/Guardian Information Section */}
+                  <div className="form-section">
+                    <h3 className="section-heading">
+                      <i className="fas fa-user-friends"></i>
+                      Parent/Guardian Information
+                    </h3>
 
-                  <div className="form-group">
-                    <label htmlFor="nav-student-signup-password">
-                      <i className="fas fa-lock"></i>
-                      Password
-                    </label>
-                    <input 
-                      type="password" 
-                      id="nav-student-signup-password" 
-                      placeholder="Create a password"
-                      required
-                    />
+                    <div className="form-group">
+                      <label htmlFor="nav-guardian-name">
+                        <i className="fas fa-user"></i>
+                        Parent/Guardian Name
+                      </label>
+                      <input 
+                        type="text" 
+                        id="nav-guardian-name" 
+                        placeholder="Enter parent/guardian name"
+                        required
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label htmlFor="nav-guardian-email">
+                        <i className="fas fa-envelope"></i>
+                        Email Address
+                      </label>
+                      <input 
+                        type="email" 
+                        id="nav-guardian-email" 
+                        placeholder="Enter parent/guardian email"
+                        required
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label htmlFor="nav-guardian-mobile">
+                        <i className="fas fa-phone"></i>
+                        Mobile Number
+                      </label>
+                      <input 
+                        type="tel" 
+                        id="nav-guardian-mobile" 
+                        placeholder="Enter parent/guardian mobile"
+                        required
+                      />
+                    </div>
                   </div>
 
                   <button type="submit" className="submit-btn student-submit">

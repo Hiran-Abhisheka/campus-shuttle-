@@ -1,17 +1,29 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import '../styles/Footer.css';
 
 const Footer = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showSignupModal, setShowSignupModal] = useState(false);
   const [loginView, setLoginView] = useState<'select' | 'rider' | 'student'>('select');
   const [signupView, setSignupView] = useState<'select' | 'rider' | 'student'>('select');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userType, setUserType] = useState<'student' | 'rider' | null>(null);
   const [brandRef, brandVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.1, delay: 0 });
   const [linksRef, linksVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.1, delay: 200 });
   const [servicesRef, servicesVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.1, delay: 400 });
   const [contactRef, contactVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.1, delay: 600 });
+
+  useEffect(() => {
+    const studentLoggedIn = localStorage.getItem('studentLoggedIn');
+    if (studentLoggedIn === 'true') {
+      setIsLoggedIn(true);
+      setUserType('student');
+    }
+  }, [location.pathname]);
 
   const handleLoginClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -98,11 +110,21 @@ const Footer = () => {
           <div ref={linksRef} className={`footer-section fade-up ${linksVisible ? 'visible' : ''}`}>
             <h3 className="footer-title">Quick Links</h3>
             <ul className="footer-links">
-              <li><a href="#home"><i className="fas fa-chevron-right"></i> Home</a></li>
-              <li><a href="#about"><i className="fas fa-chevron-right"></i> About</a></li>
-              <li><a href="#contact"><i className="fas fa-chevron-right"></i> Contact</a></li>
-              <li><Link to="/download"><i className="fas fa-chevron-right"></i> Download</Link></li>
-              <li><a href="#" onClick={handleLoginClick}><i className="fas fa-chevron-right"></i> Login</a></li>
+              {(isLoggedIn && userType === 'student') && (location.pathname === '/student-dashboard' || location.pathname === '/contact') ? (
+                <>
+                  <li><Link to="/student-dashboard"><i className="fas fa-chevron-right"></i> Ride</Link></li>
+                  <li><Link to="/contact"><i className="fas fa-chevron-right"></i> Contact</Link></li>
+                  <li><Link to="/messages"><i className="fas fa-chevron-right"></i> Message</Link></li>
+                  <li><Link to="/student-dashboard"><i className="fas fa-chevron-right"></i> Profile</Link></li>
+                </>
+              ) : (
+                <>
+                  <li><a href="#home"><i className="fas fa-chevron-right"></i> Home</a></li>
+                  <li><a href="#about"><i className="fas fa-chevron-right"></i> About</a></li>
+                  <li><a href="#contact"><i className="fas fa-chevron-right"></i> Contact</a></li>
+                  <li><Link to="/download"><i className="fas fa-chevron-right"></i> Download</Link></li>
+                </>
+              )}
             </ul>
           </div>
 
@@ -181,155 +203,6 @@ const Footer = () => {
       </div>
     </footer>
 
-    {/* Login Modal */}
-    {showLoginModal && (
-      <div className="login-modal-overlay" onClick={closeModal}>
-        <div className="login-modal" onClick={(e) => e.stopPropagation()}>
-          <button className="modal-close" onClick={closeModal}>
-            <i className="fas fa-times"></i>
-          </button>
-          
-          {loginView === 'select' && (
-            <>
-              <h2 className="modal-title">Choose Login Type</h2>
-              <p className="modal-subtitle">Select your account type to continue</p>
-
-              <div className="login-options">
-                <div className="login-option">
-                  <div className="login-option-icon rider-icon">
-                    <i className="fas fa-id-card"></i>
-                  </div>
-                  <h3>Rider Login</h3>
-                  <p>Access driver dashboard and manage routes</p>
-                  <button className="option-btn rider-btn" onClick={handleRiderLoginClick}>
-                    Continue as Rider
-                    <i className="fas fa-arrow-right"></i>
-                  </button>
-                </div>
-
-                <div className="login-option">
-                  <div className="login-option-icon student-icon">
-                    <i className="fas fa-graduation-cap"></i>
-                  </div>
-                  <h3>Student Login</h3>
-                  <p>Track shuttles and book your rides</p>
-                  <button className="option-btn student-btn" onClick={handleStudentLoginClick}>
-                    Continue as Student
-                    <i className="fas fa-arrow-right"></i>
-                  </button>
-                </div>
-              </div>
-            </>
-          )}
-
-          {loginView === 'rider' && (
-            <>
-              <button className="back-btn" onClick={handleBackToSelect}>
-                <i className="fas fa-arrow-left"></i>
-              </button>
-              <h2 className="modal-title">Rider Login</h2>
-              <p className="modal-subtitle">Welcome back! Please enter your details</p>
-
-              <form className="login-form">
-                <div className="form-group">
-                  <label htmlFor="footer-rider-email">
-                    <i className="fas fa-envelope"></i> Email Address
-                  </label>
-                  <input
-                    type="email"
-                    id="footer-rider-email"
-                    placeholder="Enter your email"
-                    required
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label htmlFor="footer-rider-password">
-                    <i className="fas fa-lock"></i> Password
-                  </label>
-                  <input
-                    type="password"
-                    id="footer-rider-password"
-                    placeholder="Enter your password"
-                    required
-                  />
-                </div>
-
-                <div className="form-options">
-                  <label className="remember-me">
-                    <input type="checkbox" />
-                    <span>Remember me</span>
-                  </label>
-                  <a href="#" className="forgot-password">Forgot Password?</a>
-                </div>
-
-                <button type="submit" className="submit-btn">
-                  Login as Rider
-                  <i className="fas fa-sign-in-alt"></i>
-                </button>
-
-                <p className="form-footer">
-                  Don't have an account? <a href="#" onClick={(e) => { e.preventDefault(); switchToSignup(); }}>Sign up</a>
-                </p>
-              </form>
-            </>
-          )}
-
-          {loginView === 'student' && (
-            <>
-              <button className="back-btn" onClick={handleBackToSelect}>
-                <i className="fas fa-arrow-left"></i>
-              </button>
-              <h2 className="modal-title">Student Login</h2>
-              <p className="modal-subtitle">Welcome back! Please enter your details</p>
-
-              <form className="login-form">
-                <div className="form-group">
-                  <label htmlFor="footer-student-email">
-                    <i className="fas fa-envelope"></i> Email Address
-                  </label>
-                  <input
-                    type="email"
-                    id="footer-student-email"
-                    placeholder="Enter your email"
-                    required
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label htmlFor="footer-student-password">
-                    <i className="fas fa-lock"></i> Password
-                  </label>
-                  <input
-                    type="password"
-                    id="footer-student-password"
-                    placeholder="Enter your password"
-                    required
-                  />
-                </div>
-
-                <div className="form-options">
-                  <label className="remember-me">
-                    <input type="checkbox" />
-                    <span>Remember me</span>
-                  </label>
-                  <a href="#" className="forgot-password">Forgot Password?</a>
-                </div>
-
-                <button type="submit" className="submit-btn">
-                  Login as Student
-                  <i className="fas fa-sign-in-alt"></i>
-                </button>
-
-                <p className="form-footer">
-                  Don't have an account? <a href="#" onClick={(e) => { e.preventDefault(); switchToSignup(); }}>Sign up</a>
-                </p>
-              </form>
-            </>
-          )}
-        </div>
-      </div>
-    )}
 
     {/* Signup Modal */}
     {showSignupModal && (
@@ -552,41 +425,141 @@ const Footer = () => {
               <h2 className="modal-title">Student Signup</h2>
               <p className="modal-subtitle">Create your student account</p>
 
-              <form className="login-form">
-                <div className="form-group">
-                  <label htmlFor="footer-student-signup-name">
-                    <i className="fas fa-user"></i> Full Name
-                  </label>
-                  <input
-                    type="text"
-                    id="footer-student-signup-name"
-                    placeholder="Enter your full name"
-                    required
-                  />
+              <form className="login-form signup-form-extended">
+                {/* Student Details Section */}
+                <div className="form-section">
+                  <h3 className="section-heading">
+                    <i className="fas fa-user-graduate"></i>
+                    Student Details
+                  </h3>
+
+                  <div className="form-group">
+                    <label htmlFor="footer-student-username">
+                      <i className="fas fa-user-circle"></i> Username
+                    </label>
+                    <input
+                      type="text"
+                      id="footer-student-username"
+                      placeholder="Choose a username"
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="footer-student-fullname">
+                      <i className="fas fa-user"></i> Full Name
+                    </label>
+                    <input
+                      type="text"
+                      id="footer-student-fullname"
+                      placeholder="Enter your full name"
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="footer-student-email">
+                      <i className="fas fa-envelope"></i> Email Address
+                    </label>
+                    <input
+                      type="email"
+                      id="footer-student-email"
+                      placeholder="Enter your email"
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="footer-student-mobile">
+                      <i className="fas fa-phone"></i> Mobile Number
+                    </label>
+                    <input
+                      type="tel"
+                      id="footer-student-mobile"
+                      placeholder="Enter your mobile number"
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="footer-student-university">
+                      <i className="fas fa-university"></i> University
+                    </label>
+                    <input
+                      type="text"
+                      id="footer-student-university"
+                      placeholder="Enter your university name"
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="footer-student-address">
+                      <i className="fas fa-home"></i> Home Address
+                    </label>
+                    <input
+                      type="text"
+                      id="footer-student-address"
+                      placeholder="Enter your home address"
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="footer-student-password">
+                      <i className="fas fa-lock"></i> Password
+                    </label>
+                    <input
+                      type="password"
+                      id="footer-student-password"
+                      placeholder="Create a password"
+                      required
+                    />
+                  </div>
                 </div>
 
-                <div className="form-group">
-                  <label htmlFor="footer-student-signup-email">
-                    <i className="fas fa-envelope"></i> Email Address
-                  </label>
-                  <input
-                    type="email"
-                    id="footer-student-signup-email"
-                    placeholder="Enter your email"
-                    required
-                  />
-                </div>
+                {/* Parent/Guardian Information Section */}
+                <div className="form-section">
+                  <h3 className="section-heading">
+                    <i className="fas fa-user-friends"></i>
+                    Parent/Guardian Information
+                  </h3>
 
-                <div className="form-group">
-                  <label htmlFor="footer-student-signup-password">
-                    <i className="fas fa-lock"></i> Password
-                  </label>
-                  <input
-                    type="password"
-                    id="footer-student-signup-password"
-                    placeholder="Create a password"
-                    required
-                  />
+                  <div className="form-group">
+                    <label htmlFor="footer-guardian-name">
+                      <i className="fas fa-user"></i> Parent/Guardian Name
+                    </label>
+                    <input
+                      type="text"
+                      id="footer-guardian-name"
+                      placeholder="Enter parent/guardian name"
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="footer-guardian-email">
+                      <i className="fas fa-envelope"></i> Email Address
+                    </label>
+                    <input
+                      type="email"
+                      id="footer-guardian-email"
+                      placeholder="Enter parent/guardian email"
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="footer-guardian-mobile">
+                      <i className="fas fa-phone"></i> Mobile Number
+                    </label>
+                    <input
+                      type="tel"
+                      id="footer-guardian-mobile"
+                      placeholder="Enter parent/guardian mobile"
+                      required
+                    />
+                  </div>
                 </div>
 
                 <button type="submit" className="submit-btn">
