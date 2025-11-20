@@ -108,12 +108,12 @@ const Navbar = () => {
             <i className={`fas ${mobileMenuOpen ? 'fa-times' : 'fa-bars'}`}></i>
           </button>
           <div className={`nav-links ${mobileMenuOpen ? 'mobile-active' : ''}`}>
-            {(isLoggedIn && userType === 'student') && (location.pathname === '/student-dashboard' || location.pathname === '/contact') ? (
+            {(isLoggedIn && userType === 'student') && (location.pathname === '/student-dashboard' || location.pathname === '/contact' || location.pathname === '/student-profile' || location.pathname === '/shuttle-booking') ? (
               <>
                 <Link to="/student-dashboard" className="nav-link" onClick={closeMobileMenu}>Ride</Link>
                 <Link to="/contact" className="nav-link" onClick={closeMobileMenu}>Contact</Link>
                 <a href="#message" className="nav-link" onClick={closeMobileMenu}>Message</a>
-                <Link to="/student-dashboard" className="nav-button" onClick={closeMobileMenu}>
+                <Link to="/student-profile" className="nav-button" onClick={closeMobileMenu}>
                   <i className="fas fa-user-circle"></i> Profile
                 </Link>
               </>

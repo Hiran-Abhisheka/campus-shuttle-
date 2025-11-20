@@ -110,7 +110,7 @@ const Footer = () => {
           <div ref={linksRef} className={`footer-section fade-up ${linksVisible ? 'visible' : ''}`}>
             <h3 className="footer-title">Quick Links</h3>
             <ul className="footer-links">
-              {(isLoggedIn && userType === 'student') && (location.pathname === '/student-dashboard' || location.pathname === '/contact') ? (
+              {(isLoggedIn && userType === 'student') && (location.pathname === '/student-dashboard' || location.pathname === '/contact' || location.pathname === '/shuttle-booking') ? (
                 <>
                   <li><Link to="/student-dashboard"><i className="fas fa-chevron-right"></i> Ride</Link></li>
                   <li><Link to="/contact"><i className="fas fa-chevron-right"></i> Contact</Link></li>

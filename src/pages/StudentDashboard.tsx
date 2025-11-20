@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 
 const StudentDashboard = () => {
   const [searchQuery, setSearchQuery] = useState('');
+  const navigate = useNavigate();
 
   const [welcomeRef, welcomeVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.2 });
   const [searchRef, searchVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.2, delay: 200 });
@@ -191,7 +193,9 @@ const StudentDashboard = () => {
                     </span>
                     <span className="route-price">{route.price}</span>
                   </div>
-                  <button className="book-btn">Book Now</button>
+                  <button className="book-btn" onClick={() => navigate('/shuttle-booking', { state: { shuttle: route } })}>
+                    Book Now
+                  </button>
                 </div>
               </div>
             ))}

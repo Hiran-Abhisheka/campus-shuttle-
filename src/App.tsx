@@ -5,6 +5,8 @@ import LandingPage from './components/LandingPage'
 import AboutUs from './components/AboutUs'
 import Contact from './components/Contact'
 import StudentDashboard from './pages/StudentDashboard'
+import StudentProfile from './pages/StudentProfile'
+import ShuttleBooking from './pages/ShuttleBooking'
 import './styles/animations.css' // Import animations
 
 // Scroll to top component
@@ -35,6 +37,16 @@ export default function App() {
         <Route path="/student-dashboard" element={
           <Layout>
             <StudentDashboard />
+          </Layout>
+        } />
+        <Route path="/student-profile" element={
+          <Layout>
+            <StudentProfile />
+          </Layout>
+        } />
+        <Route path="/shuttle-booking" element={
+          <Layout>
+            <ShuttleBooking />
           </Layout>
         } />
         <Route path="/contact" element={
