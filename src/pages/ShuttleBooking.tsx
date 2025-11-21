@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import RouteTrackingModal from '../components/RouteTrackingModal';
 
 interface ShuttleRoute {
   id: number;
@@ -23,6 +24,8 @@ const ShuttleBooking = () => {
   const [passengerName, setPassengerName] = useState('');
   const [passengerEmail, setPassengerEmail] = useState('');
   const [passengerPhone, setPassengerPhone] = useState('');
+  const [showTrackingModal, setShowTrackingModal] = useState(false);
+  const [bookingData, setBookingData] = useState<any>(null);
 
   // Generate seat layout (4 rows x 4 seats = 16 seats)
   const totalSeats = 16;
@@ -70,8 +73,9 @@ const ShuttleBooking = () => {
     }
 
     // Here you would typically send the booking data to a backend
-    const bookingData = {
+    const newBookingData = {
       shuttleId: shuttleData.id,
+      shuttleData,
       selectedSeats,
       passengerName,
       passengerEmail,
@@ -82,11 +86,12 @@ const ShuttleBooking = () => {
 
     // Save to localStorage for demo purposes
     const existingBookings = JSON.parse(localStorage.getItem('shuttleBookings') || '[]');
-    existingBookings.push(bookingData);
+    existingBookings.push(newBookingData);
     localStorage.setItem('shuttleBookings', JSON.stringify(existingBookings));
 
-    alert(`Booking confirmed! Seats: ${selectedSeats.join(', ')}`);
-    navigate('/student-dashboard');
+    // Set booking data and show tracking modal
+    setBookingData(newBookingData);
+    setShowTrackingModal(true);
   };
 
   const renderSeat = (seatNumber: number) => {
@@ -262,6 +267,16 @@ const ShuttleBooking = () => {
           </button>
         </div>
       </div>
+
+      {/* Route Tracking Modal */}
+      <RouteTrackingModal
+        isOpen={showTrackingModal}
+        onClose={() => {
+          setShowTrackingModal(false);
+          navigate('/student-dashboard');
+        }}
+        bookingData={bookingData}
+      />
     </div>
   );
 };
